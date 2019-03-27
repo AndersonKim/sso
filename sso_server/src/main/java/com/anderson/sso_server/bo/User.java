@@ -1,14 +1,9 @@
-package com.anderson.slave_1.bo;
-
-import net.bytebuddy.dynamic.loading.InjectionClassLoader;
+package com.anderson.sso_server.bo;
+import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.annotation.Generated;
-import javax.persistence.*;
-import java.util.UUID;
-
 @Entity
-@Table(name="user")
+@Table(name="serveruser")
 public class User {
     @Id
     @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
@@ -18,8 +13,6 @@ public class User {
     private String userName;
     @Column(name="password")
     private String passWord;
-    @Column(name="cert")
-    private String cert;
 
     public String getId() {
         return id;

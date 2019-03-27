@@ -1,6 +1,6 @@
-package com.anderson.slave_1.dao;
+package com.anderson.sso_server.dao;
 
-import com.anderson.slave_1.bo.User;
+import com.anderson.sso_server.bo.User;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;
@@ -8,5 +8,4 @@ import javax.transaction.Transactional;
 @Transactional
 public interface UserDao extends CrudRepository<User, Long> {
     public User findByUserName(String userName);
-    public User findByCert(String cert);
 }
