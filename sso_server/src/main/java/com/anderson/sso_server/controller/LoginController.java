@@ -1,6 +1,7 @@
 package com.anderson.sso_server.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.anderson.sso_server.bo.Token;
 import com.anderson.sso_server.bo.User;
 import com.anderson.sso_server.dao.TokenDao;
 import com.anderson.sso_server.dao.UserDao;
@@ -42,11 +43,18 @@ public class LoginController {
         }
     }
 
+    @RequestMapping("/toSlave_1")
+    public String toSlave_1(){
+
+    }
+
     @RequestMapping("/checkToken")
     @ResponseBody
     public String checkToken(String json){
         JSONObject jsonObject=JSONObject.parseObject(json);
         String token= jsonObject.getString("token");
+        Token dbToken = tokenDao.findByToken(token);
+        User dbUser=userDao.findById(dbToken.getUserId());
         return token;
     }
 

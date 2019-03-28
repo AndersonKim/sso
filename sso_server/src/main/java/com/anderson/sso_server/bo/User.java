@@ -13,6 +13,8 @@ public class User {
     private String userName;
     @Column(name="password")
     private String passWord;
+    @Column(name="cert")
+    private String cert;
 
     public String getId() {
         return id;
@@ -36,5 +38,13 @@ public class User {
 
     public void setPassWord(String passWord) {
         this.passWord = passWord;
+    }
+
+    public String getCert() {
+        return cert;
+    }
+
+    public void setCert(String cert) {
+        this.cert = cert;
     }
 }

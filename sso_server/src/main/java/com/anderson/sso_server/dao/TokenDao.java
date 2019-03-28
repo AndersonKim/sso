@@ -7,6 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import javax.transaction.Transactional;
 
 @Transactional
-public interface TokenDao extends CrudRepository<Token, Long> {
+public interface TokenDao extends CrudRepository<Token, String> {
     public Token findByToken(String token);
 }
