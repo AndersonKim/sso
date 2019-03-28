@@ -7,11 +7,13 @@ import com.anderson.sso_server.dao.TokenDao;
 import com.anderson.sso_server.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.UUID;
 
 @Controller
 public class LoginController {
@@ -24,7 +26,7 @@ public class LoginController {
     @RequestMapping("/index")
     public String index(HttpServletRequest request){
         HttpSession session = request.getSession();
-        if(session.getAttribute("username")==null){
+        if(session.getAttribute("user")==null){
             return "login";
         }else{
             return "success";
@@ -34,9 +36,9 @@ public class LoginController {
     @RequestMapping("/login")
     public String login(User user, HttpServletRequest request){
         HttpSession session = request.getSession();
-        User dbUser=userDao.findByUserName(user.getUserName());
-        if(dbUser.getPassWord().equals(user.getPassWord())){
-            session.setAttribute("username",user.getUserName());
+        User dbUser=userDao.findByName(user.getName());
+        if(dbUser.getPass().equals(user.getPass())){
+            session.setAttribute("user",dbUser);
             return "success";
         }else{
             return "fail";
@@ -44,18 +46,20 @@ public class LoginController {
     }
 
     @RequestMapping("/toSlave_1")
-    public String toSlave_1(){
-
+    public String toSlave_1(HttpServletRequest request){
+        //登录状态下才能显示跳转到slave的地址，并附加token的信息，触发业务系统获取用户信息
+        if(request.getSession().getAttribute("user")!=null){
+            Token newToken=new Token();
+            User sessionUser = (User) request.getSession().getAttribute("user");
+            newToken.setUserId(sessionUser.getUuid());
+            newToken.setToken(UUID.randomUUID().toString().replace("-",""));
+            tokenDao.save(newToken);
+            return "redirect:http://localhost:8081/signInWithToken/"+newToken.getToken();
+        }else{
+            return "login";
+        }
     }
 
-    @RequestMapping("/checkToken")
-    @ResponseBody
-    public String checkToken(String json){
-        JSONObject jsonObject=JSONObject.parseObject(json);
-        String token= jsonObject.getString("token");
-        Token dbToken = tokenDao.findByToken(token);
-        User dbUser=userDao.findById(dbToken.getUserId());
-        return token;
-    }
+
 
 }

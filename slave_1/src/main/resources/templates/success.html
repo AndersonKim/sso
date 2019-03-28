@@ -5,6 +5,9 @@
     <title>登录成功</title>
 </head>
 <body>
-登录成功<p th:text="${session.username}"></p>
+登录成功<br>
+name:<p th:text="${session.user.name}"></p>
+pass:<p th:text="${session.user.pass}"></p>
+cert:<p th:text="${session.user.cert}"></p>
 </body>
 </html>

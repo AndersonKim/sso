@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import javax.transaction.Transactional;
 
 @Transactional
-public interface UserDao extends CrudRepository<User, Long> {
-    public User findByUserName(String userName);
+public interface UserDao extends CrudRepository<User, String> {
+    public User findByName(String userName);
     public User findByCert(String cert);
 }

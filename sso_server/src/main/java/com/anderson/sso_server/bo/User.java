@@ -1,43 +1,45 @@
 package com.anderson.sso_server.bo;
-import javax.persistence.*;
+
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
+
 @Entity
-@Table(name="serveruser")
+@Table(name="ssouser")
 public class User {
     @Id
     @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
     @GeneratedValue(generator = "jpa-uuid")
-    private String id;
-    @Column(name="username")
-    private String userName;
-    @Column(name="password")
-    private String passWord;
+    private String uuid;
+    @Column(name="name")
+    private String name;
+    @Column(name="pass")
+    private String pass;
     @Column(name="cert")
     private String cert;
 
-    public String getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getPassWord() {
-        return passWord;
+    public String getPass() {
+        return pass;
     }
 
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 
     public String getCert() {
