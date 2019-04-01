@@ -2,6 +2,7 @@ package com.anderson.sso_server.webservice;
 
 import com.alibaba.fastjson.JSONObject;
 import com.anderson.sso_server.bo.Token;
+import com.anderson.sso_server.bo.User;
 import com.anderson.sso_server.dao.TokenDao;
 import com.anderson.sso_server.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,11 @@ public class TokenCheckService {
         String tokenStr= jsonObject.getString("token");
         Token dbToken = tokenDao.findByToken(tokenStr);
         if(dbToken!=null){
-            return JSONObject.toJSONString(userDao.findByUuid(dbToken.getUserId()));
+            User dbUser=userDao.findByUuid(dbToken.getUserId());
+            //查验通过后删除该token
+            //TODO 使用标志位标记token是否被使用，方便日志统计使用
+            tokenDao.delete(dbToken);
+            return JSONObject.toJSONString(dbUser);
         }else{
             return JSONObject.toJSONString("");
         }

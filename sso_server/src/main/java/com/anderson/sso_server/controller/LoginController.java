@@ -61,5 +61,30 @@ public class LoginController {
     }
 
 
+    @RequestMapping("/ssoAction")
+    public String ssoAction(String appId,HttpServletRequest request){
+        //用于子系统之间跳转的页面
+        //用户若已经登录就跳转到子系统（appId）指定的路由（8081/signInWithToken还是8081/signInWithToken）即可
+        //否则先登录，然后跳转到指定的路由
+        if(request.getSession().getAttribute("user")!=null){
+            Token newToken=new Token();
+            User sessionUser = (User) request.getSession().getAttribute("user");
+            newToken.setUserId(sessionUser.getUuid());
+            newToken.setToken(UUID.randomUUID().toString().replace("-",""));
+            tokenDao.save(newToken);
+            if(appId.equals("s1")){
+                return "redirect:http://localhost:8081/signInWithToken/"+newToken.getToken();
+            }else if(appId.equals("s2")){
+                return "redirect:http://localhost:8082/signInWithToken/"+newToken.getToken();
+            }else{
+                return "redirect:http://localhost:8081/signInWithToken/"+newToken.getToken();
+            }
+        }else{
+            return "login";
+        }
+    }
+
+
+
 
 }
